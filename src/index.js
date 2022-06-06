@@ -11,5 +11,5 @@ root.render(
 		<App />
 	</React.StrictMode>
 );
-
+console.log(process.env.REACT_APP_NEWS_URL);
 reportWebVitals();

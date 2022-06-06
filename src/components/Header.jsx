@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import shortId from "shortid";
 import { newsCategory } from "../news";
 
 class Header extends Component {
@@ -13,7 +14,7 @@ class Header extends Component {
 	handleKeyPress = (e) => {};
 
 	render() {
-		const { category } = this.props;
+		const { category, changeCategory } = this.props;
 		return (
 			<div className="my-4">
 				<h1 className="mb-4" style={{ fontWeight: 300 }}>
@@ -31,9 +32,17 @@ class Header extends Component {
 					{newsCategory &&
 						Object.keys(newsCategory).map((item) =>
 							category === newsCategory[item] ? (
-								<button className="btn btn-warning me-2 mb-2">{`#${newsCategory[item]}`}</button>
+								<button
+									key={shortId.generate()}
+									className="btn btn-warning me-2 mb-2"
+									onClick={() => changeCategory(newsCategory[item])}
+								>{`#${newsCategory[item]}`}</button>
 							) : (
-								<button className="btn btn-light me-2 mb-2">{`#${newsCategory[item]}`}</button>
+								<button
+									key={shortId.generate()}
+									onClick={() => changeCategory(newsCategory[item])}
+									className="btn btn-light me-2 mb-2"
+								>{`#${newsCategory[item]}`}</button>
 							)
 						)}
 				</div>
