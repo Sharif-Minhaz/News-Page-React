@@ -7,11 +7,19 @@ class Header extends Component {
 		searchTerm: "",
 	};
 
+	searchBarRef = React.createRef();
+
+	componentDidMount() {
+		this.searchBarRef.current.focus();
+	}
+
 	handleChange = (e) => {
 		this.setState({ searchTerm: e.target.value });
 	};
 
-	handleKeyPress = (e) => {};
+	handleKeyPress = (e) => {
+		e.key === "Enter" && this.props.search(this.state.searchTerm);
+	};
 
 	render() {
 		const { category, changeCategory } = this.props;
@@ -21,6 +29,7 @@ class Header extends Component {
 					Block Buster Headlines
 				</h1>
 				<input
+					ref={this.searchBarRef}
 					type="search"
 					placeholder="Type anything &amp; press enter to search"
 					className="form-control"

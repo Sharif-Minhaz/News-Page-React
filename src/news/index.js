@@ -11,27 +11,28 @@ export const newsCategory = {
 	sports: "sports",
 };
 
-const maxItemPerPage = 10;
+const maxItemPerPage = 30;
 
 export default class News {
 	constructor(category) {
 		this._category = category;
 		this._searchTerm = "";
-		this._totalPage = 1;
 		this._pageSize = maxItemPerPage;
+		this._totalPage = 1;
 		this._currentPage = 1;
 	}
 
 	async getNews() {
 		try {
 			const { data } = await axios.get(this._getUrl());
-			console.log(this._getUrl()); // testing purpose
-			this._totalPage = Math.ceil(data.totalResults / this._pageSize);
+			let calculateTotalPage = Math.ceil(data.totalResults / this._pageSize);
+			console.log(calculateTotalPage);
+			this._totalPage = calculateTotalPage === 0 ? 1 : calculateTotalPage;
 			return {
 				articles: data.articles,
-				totalPage: this._totalPage,
 				isNext: this._isNext(),
 				isPrevious: this._isPrevious(),
+				totalPage: this._totalPage,
 				currentPage: this._currentPage,
 				category: this._category,
 				totalResults: data.totalResults,

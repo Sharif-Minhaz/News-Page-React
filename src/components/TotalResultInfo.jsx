@@ -1,14 +1,15 @@
 import React from "react";
 
-function TotalResultInfo({ totalRes, page, totalPage }) {
+// passing ref and work with it using react forward ref
+const TotalResultInfo = React.forwardRef((props, ref) => {
 	return (
-		<div className="d-flex">
-			<p className="text-black-50">{totalRes} result found</p>
+		<div ref={ref} className="d-flex">
+			<p className="text-black-50">{props.totalRes} result found</p>
 			<p className="text-black-50 ms-auto">
-				{page} page of {totalPage}
+				{props.page} page of {props.totalPage}
 			</p>
 		</div>
 	);
-}
+});
 
 export default TotalResultInfo;

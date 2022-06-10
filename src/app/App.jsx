@@ -16,16 +16,14 @@ class App extends Component {
 		isLoading: true,
 	};
 
+	aboutResult = React.createRef();
+
 	componentDidMount() {
 		news.getNews()
 			.then((data) => {
 				this.setState({ data, isLoading: false });
 			})
-			.catch((error) => {
-				console.error(error);
-				alert("Something went wrong!");
-				this.setState({ isLoading: false });
-			});
+			.catch((err) => this.errorHandler(err));
 	}
 
 	errorHandler = (err) => {
@@ -57,6 +55,7 @@ class App extends Component {
 	};
 
 	handlePageChange = (value) => {
+		// need double check
 		this.setState({
 			data: {
 				...this.state.data,
@@ -66,6 +65,7 @@ class App extends Component {
 	};
 
 	gotoPage = () => {
+		// need double check
 		this.setState({ isLoading: true });
 		news.setCurrentPage(this.state.data.currentPage)
 			.then((data) => {
@@ -83,6 +83,19 @@ class App extends Component {
 			.catch((err) => this.errorHandler(err));
 	};
 
+	search = (searchTerm) => {
+		this.setState({ isLoading: true });
+		news.search(searchTerm)
+			.then((data) => {
+				this.setState({ data, isLoading: false });
+			})
+			.catch((err) => this.errorHandler(err));
+	};
+
+	gotoTop = () => {
+		window.scroll(0, this.aboutResult.current.scrollTop);
+	};
+
 	render() {
 		const { articles, isPrevious, isNext, category, totalResults, currentPage, totalPage } =
 			this.state.data;
@@ -90,8 +103,13 @@ class App extends Component {
 			<div className="container">
 				<div className="row">
 					<div className="col-sm-6 offset-md-3">
-						<Header changeCategory={this.changeCategory} category={category} />
+						<Header
+							changeCategory={this.changeCategory}
+							search={this.search}
+							category={category}
+						/>
 						<TotalResultInfo
+							ref={this.aboutResult}
 							totalRes={totalResults}
 							page={currentPage}
 							totalPage={totalPage}
@@ -111,6 +129,7 @@ class App extends Component {
 									handlePageChange={this.handlePageChange}
 									gotoPage={this.gotoPage}
 								/>
+								<button className="btn btn-secondary mb-3" onClick={this.gotoTop}>Go To Top</button>
 							</div>
 						)}
 					</div>
