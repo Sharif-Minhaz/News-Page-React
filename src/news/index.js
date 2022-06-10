@@ -1,6 +1,7 @@
 import axios from "../utils/axios";
 
 export const newsCategory = {
+	all: "top",
 	technology: "technology",
 	science: "science",
 	business: "business",
@@ -24,6 +25,7 @@ export default class News {
 	async getNews() {
 		try {
 			const { data } = await axios.get(this._getUrl());
+			console.log(this._getUrl()); // testing purpose
 			this._totalPage = Math.ceil(data.totalResults / this._pageSize);
 			return {
 				articles: data.articles,
@@ -75,10 +77,11 @@ export default class News {
 	}
 
 	_getUrl() {
-		let url = "/?";
-		if (this._category) url += `category=${this._category}`;
+		let url = "/?language=en";
+		if (this._category && this._category !== "top") url += `&category=${this._category}`;
 		if (this._searchTerm) url += `&q=${this._searchTerm}`;
 		if (this._pageSize) url += `&pageSize=${this._pageSize}`;
+		if (this._searchTerm) url += `&pageSize=${this._pageSize}`;
 		if (this._currentPage) url += `&page=${this._currentPage}`;
 
 		return url;

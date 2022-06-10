@@ -60,7 +60,7 @@ class App extends Component {
 		this.setState({
 			data: {
 				...this.state.data,
-				currentPage: Number.parseInt(value),
+				currentPage: Number(value),
 			},
 		});
 	};
